@@ -1,12 +1,17 @@
 package br.com.welldias.wellBiblioteca.principal;
 
-import br.com.welldias.wellBiblioteca.model.ResultsApi;
+import br.com.welldias.wellBiblioteca.dto.LivroDto;
+import br.com.welldias.wellBiblioteca.dto.ResultadoDto;
+import br.com.welldias.wellBiblioteca.model.Autor;
+import br.com.welldias.wellBiblioteca.model.Livro;
 import br.com.welldias.wellBiblioteca.service.ConsumoApi;
 import br.com.welldias.wellBiblioteca.service.ConverteDados;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.Scanner;
 
 public class Principal {
+    private ObjectMapper mapper = new ObjectMapper();
     Scanner leitura = new Scanner(System.in);
     private final String URL_BASE = "https://gutendex.com/books/?search=";
     private int opcao = -1;
@@ -35,17 +40,24 @@ public class Principal {
         switch (opcao) {
             case 1:
                 System.out.println("Insira o nome de livro que voce deseja buscar: ");
+
                 var livroBuscado = leitura.nextLine();
-                String livroJson = consumoApi.obterDados(URL_BASE + livroBuscado);
+                String livroJson = consumoApi.obterDados(URL_BASE + livroBuscado.toLowerCase().replace(" ", "+"));
+
                 System.out.println(livroJson);
 
                 ConverteDados conversorJsonParaClasse = new ConverteDados();
 
-                ResultsApi livro = conversorJsonParaClasse.obterDados(livroJson, ResultsApi.class);
+                ResultadoDto livroDto = conversorJsonParaClasse.obterDados(livroJson, ResultadoDto.class);
+                System.out.println(livroDto);
+                var livro = new Livro(livroDto.resultados());
+                var autor = new Autor(livro.getAutores());
+                System.out.println(autor);
                 System.out.println(livro);
         }
 
     }
         System.out.println("Programa encerrado!");
     }
+
 }

@@ -1,7 +1,10 @@
 package br.com.welldias.wellBiblioteca.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.List;
+
 
 public class Resultados {
     private int id;
@@ -133,8 +136,7 @@ public class Resultados {
                 ", copyright=" + copyright +
                 ", media_type='" + media_type + '\'' +
                 ", formats=" + formats +
-                ", download_count=" + download_count +
-                '}';
+                ", download_count=" + download_count;
     }
 }
 

@@ -1,17 +1,26 @@
 package br.com.welldias.wellBiblioteca.model;
 
+import br.com.welldias.wellBiblioteca.dto.AutorDTO;
+import jakarta.persistence.*;
+
+import java.util.List;
+
+@Entity
+@Table(name = "autores")
 public class Autor {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String name;
     private String birth_year;
     private String death_year;
 
-    public Autor() {
-    }
+    public Autor() {}
 
-    public Autor(String name, String birth_year, String death_year) {
-        this.name = name;
-        this.birth_year = birth_year;
-        this.death_year = death_year;
+    public Autor(List<AutorDTO> autorDTO) {
+        this.name = autorDTO.get(0).nome();
+        this.birth_year = autorDTO.get(0).dataNascimento();
+        this.death_year = autorDTO.get(0).dataFalecimento();
     }
 
     public String getName() {
@@ -40,8 +49,8 @@ public class Autor {
 
     @Override
     public String toString() {
-        return "name='" + name +
-                ", birth_year='" + birth_year +
-                ", death_year='" + death_year;
+        return "Nome = " + name + ", " +
+                "Ano de nascimento = " + birth_year + ", " +
+                "Ano da morte = " + death_year;
     }
 }

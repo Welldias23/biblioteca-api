@@ -1,20 +1,24 @@
 package br.com.welldias.wellBiblioteca.model;
 
+import br.com.welldias.wellBiblioteca.dto.AutorDTO;
+import br.com.welldias.wellBiblioteca.dto.LivroDto;
+
 import java.util.List;
 
 public class Livro {
     private int id;
     private String titulo;
-    private List<Autor> autores;
-    private List<String> Idiomas;
+    private List<AutorDTO> autores;
+    private List<String> idiomas;
     private int numeroDownloads;
 
-    public Livro(int id, String titulo, List<Autor> autores, List<String> idiomas, int numeroDownloads) {
-        this.id = id;
-        this.titulo = titulo;
-        this.autores = autores;
-        Idiomas = idiomas;
-        this.numeroDownloads = numeroDownloads;
+    //public Livro() {}
+
+    public Livro(List<LivroDto> livroDto) {
+        this.titulo = livroDto.get(0).titulo();
+        this.autores = livroDto.get(0).autorDTOList();
+        this.idiomas = livroDto.get(0).idioma();
+        this.numeroDownloads = Integer.parseInt(livroDto.get(0).totalDownloads());
     }
 
     public int getId() {
@@ -33,20 +37,20 @@ public class Livro {
         this.titulo = titulo;
     }
 
-    public List<Autor> getAutores() {
+    public List<AutorDTO> getAutores() {
         return autores;
     }
 
-    public void setAutores(List<Autor> autores) {
+    public void setAutores(List<AutorDTO> autores) {
         this.autores = autores;
     }
 
     public List<String> getIdiomas() {
-        return Idiomas;
+        return idiomas;
     }
 
     public void setIdiomas(List<String> idiomas) {
-        Idiomas = idiomas;
+        this.idiomas = idiomas;
     }
 
     public int getNumeroDownloads() {
@@ -61,7 +65,7 @@ public class Livro {
     public String toString() {
         return "titulo ='" + titulo +
                 ", autores =" + autores +
-                ", Idiomas =" + Idiomas +
+                ", Idiomas =" + idiomas +
                 ", numeroDownloads =" + numeroDownloads;
     }
 }
