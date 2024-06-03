@@ -3,6 +3,7 @@ package br.com.welldias.wellBiblioteca.model;
 import br.com.welldias.wellBiblioteca.dto.AutorDTO;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -11,46 +12,49 @@ public class Autor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    private String birth_year;
-    private String death_year;
+    @Column(unique = true)
+    private String nome;
+    private int dataNascimento;
+    private int dataFalecimento;
+    @OneToMany(mappedBy = "autor")
+    private List<Livro> livros = new ArrayList<>();
 
     public Autor() {}
 
-    public Autor(List<AutorDTO> autorDTO) {
-        this.name = autorDTO.get(0).nome();
-        this.birth_year = autorDTO.get(0).dataNascimento();
-        this.death_year = autorDTO.get(0).dataFalecimento();
+    public Autor(AutorDTO autorDTO) {
+        this.nome = autorDTO.nome();
+        this.dataNascimento = Integer.parseInt(autorDTO.dataNascimento());
+        this.dataFalecimento = Integer.parseInt(autorDTO.dataFalecimento());
     }
 
-    public String getName() {
-        return name;
+    public String getNome() {
+        return nome;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
-    public String getBirth_year() {
-        return birth_year;
+    public int getDataNascimento() {
+        return dataNascimento;
     }
 
-    public void setBirth_year(String birth_year) {
-        this.birth_year = birth_year;
+    public void setDataNascimento(int dataNascimento) {
+        this.dataNascimento = dataNascimento;
     }
 
-    public String getDeath_year() {
-        return death_year;
+    public int getDataFalecimento() {
+        return dataFalecimento;
     }
 
-    public void setDeath_year(String death_year) {
-        this.death_year = death_year;
+    public void setDataFalecimento(int dataFalecimento) {
+        this.dataFalecimento = dataFalecimento;
     }
 
     @Override
     public String toString() {
-        return "Nome = " + name + ", " +
-                "Ano de nascimento = " + birth_year + ", " +
-                "Ano da morte = " + death_year;
+        return  nome + ", " +
+                "Ano de nascimento = " + dataNascimento + ", " +
+                "Ano da morte = " + dataFalecimento;
     }
 }

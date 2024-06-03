@@ -2,30 +2,36 @@ package br.com.welldias.wellBiblioteca.model;
 
 import br.com.welldias.wellBiblioteca.dto.AutorDTO;
 import br.com.welldias.wellBiblioteca.dto.LivroDto;
+import jakarta.persistence.*;
 
 import java.util.List;
 
+@Entity
+@Table(name = "livros")
 public class Livro {
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String titulo;
-    private List<AutorDTO> autores;
-    private List<String> idiomas;
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    private Autor autor;
+    private String idioma;
     private int numeroDownloads;
 
-    //public Livro() {}
+    public Livro() {}
 
-    public Livro(List<LivroDto> livroDto) {
-        this.titulo = livroDto.get(0).titulo();
-        this.autores = livroDto.get(0).autorDTOList();
-        this.idiomas = livroDto.get(0).idioma();
-        this.numeroDownloads = Integer.parseInt(livroDto.get(0).totalDownloads());
+    public Livro(LivroDto livroDto) {
+        this.titulo = livroDto.titulo();
+        this.autor = new Autor(livroDto.autorDTOList().get(0));
+        this.idioma = livroDto.idioma().getFirst();
+        this.numeroDownloads = Integer.parseInt(livroDto.totalDownloads());
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -37,20 +43,20 @@ public class Livro {
         this.titulo = titulo;
     }
 
-    public List<AutorDTO> getAutores() {
-        return autores;
+    public Autor getAutor() {
+        return autor;
     }
 
-    public void setAutores(List<AutorDTO> autores) {
-        this.autores = autores;
+    public void setAutores(Autor autor) {
+        this.autor = autor;
     }
 
-    public List<String> getIdiomas() {
-        return idiomas;
+    public String getIdioma() {
+        return idioma;
     }
 
-    public void setIdiomas(List<String> idiomas) {
-        this.idiomas = idiomas;
+    public void setIdioma(String idioma) {
+        this.idioma = idioma;
     }
 
     public int getNumeroDownloads() {
@@ -63,9 +69,9 @@ public class Livro {
 
     @Override
     public String toString() {
-        return "titulo ='" + titulo +
-                ", autores =" + autores +
-                ", Idiomas =" + idiomas +
-                ", numeroDownloads =" + numeroDownloads;
+        return "titulo = " + titulo +
+                "\nautor = " + autor +
+                "\nIdiomas = " + idioma +
+                "\nnumeroDownloads = " + numeroDownloads;
     }
 }
